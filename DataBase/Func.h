@@ -9,7 +9,7 @@
 void save_data(std::vector<Student>& arr);
 
 //clear file
-void file_clear();
+inline void file_clear();
 
 //get ALL data from file
 void get_data_from_file(std::vector<Student>& arr);
