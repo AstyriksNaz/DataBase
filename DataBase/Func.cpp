@@ -1,5 +1,6 @@
 ﻿#include "Func.h"
 
+#pragma region Timer
 static class Timer {
 public:
 	Timer() {
@@ -15,6 +16,7 @@ private:
 	std::chrono::time_point<std::chrono::steady_clock> start, end;
 };
 
+#pragma endregion Timer;
 
 void save_data(std::vector<Student>& arr) {
 	system("cls");
@@ -31,7 +33,7 @@ void save_data(std::vector<Student>& arr) {
 	waitButton();
 }
 
-void file_clear() {
+inline void file_clear() {
 	std::ofstream file(current_file, std::ios::out | std::ios::trunc);
 }
 
@@ -63,7 +65,7 @@ void show_data(const Student& x) {
 	std::cout << std::left << std::setw(1) << '|' << std::setw(6) << x.m_studentID << '|'
 		<< std::setw(20) << x.m_name << '|'
 		<< std::setw(20) << x.m_surname << '|'
-		<< std::setw(10) << x.m_groop << '|'
+		<< std::setw(10) << x.m_group << '|'
 		<< std::setw(5) << x.m_age << '|'
 		<< std::setw(5) << x.m_GPA << '|' << std::endl;
 }
@@ -150,31 +152,31 @@ void remove_student(std::vector<Student>& arr) {
 void add_data(std::vector<Student>& arr) {
 	system("cls");
 	std::cin.ignore(32767, '\n');
-	std::string name;
-	std::string surname;
-	std::string groop;
-	int age;
-	float GPA;
+	std::string tName;
+	std::string tSurname;
+	std::string tGroop;
+	int tAge;
+	float tGPA;
 
 	std::cout << "Enter student name: ";
-	std::getline(std::cin, name);
+	std::getline(std::cin, tName);
 
 	std::cout << "Enter student surname: ";
-	std::getline(std::cin, surname);
+	std::getline(std::cin, tSurname);
 
 	std::cout << "Enter student groop: ";
-	std::getline(std::cin, groop);
+	std::getline(std::cin, tGroop);
 
 	std::cout << "Enter student age: ";
-	std::cin >> age;
+	std::cin >> tAge;
 
 	std::cout << "Enter student GPA: ";
-	std::cin >> GPA;
+	std::cin >> tGPA;
 
 	std::cin.ignore(32767, '\n');
 	system("cls");
 
-	arr.push_back(Student::Student(name, surname, groop, static_cast<size_t>(age), static_cast<float>(GPA)));
+	arr.push_back(Student::Student(tName, tSurname, tGroop, static_cast<size_t>(tAge), static_cast<float>(tGPA)));
 	std::cout << "\t\tAdded student: " << std::endl;
 
 	show_data(arr.back());
@@ -199,7 +201,7 @@ void editData(std::vector<Student>& arr) {
 	show_data(arr);
 
 	std::cout << "\nEnter the student index whose data you want to correct: " << std::endl;
-	int index;
+	long index;
 	std::cin >> index;
 
 	if (index < 0 || index > arr.size()) {
@@ -209,81 +211,84 @@ void editData(std::vector<Student>& arr) {
 	index--;
 	std::cin.ignore(32767, '\n');
 
-	std::cout << "What are you need to edit?\n1)Name\n2)surname\n3)Groop\n4)Year\n5)GPA\n6)All Data\n0)Exit" << std::endl;
-	int value;
-	std::cin >> value;
+	std::cout << "What are you need to edit?\n1)Name\n2)Surname\n3)Groop\n4)Year\n5)GPA\n6)All Data\n0)Exit" << std::endl;
+	short choise;
+	std::cin >> choise;
 	std::cin.ignore(32767, '\n');
 	system("cls");
 
 	//buffers to new data
-	std::string test;
-	int newYear;
-	float newGPA;
+	std::string temp;
 
 	//system of choose 
-	switch (value) {
+	switch (choise) {
 	case 0:
 		return;
 		break;
 		//Name
 	case 1:
 		std::cout << "Enter new student name: " << std::endl;
-		std::getline(std::cin, test);
-		arr[index].EditName(test);
+		std::getline(std::cin, temp);
+		arr[index].EditName(temp);
 		std::cout << std::endl;
 		break;
 		//surname
 	case 2:
 		std::cout << "Enter new student surname: " << std::endl;
-		std::getline(std::cin, test);
-		arr[index].EditSurname(test);
+		std::getline(std::cin, temp);
+		arr[index].EditSurname(temp);
 		std::cout << std::endl;
 		break;
 		//Groop
 	case 3:
 		std::cout << "Enter new groop: " << std::endl;
-		std::getline(std::cin, test);
-		arr[index].EditGroop(test);
+		std::getline(std::cin, temp);
+		arr[index].EditGroop(temp);
 		std::cout << std::endl;
 		break;
 		//age
 	case 4:
 		std::cout << "Enter new student age: " << std::endl;
-		std::cin >> newYear;
+		std::cin >> temp;
 		std::cin.ignore(32767, '\n');
-		arr[index].EditYear(newYear);
+		arr[index].EditYear(temp);
 		std::cout << std::endl;;
 		break;
 		//GPA
 	case 5:
 		std::cout << "Enter new student name: " << std::endl;
-		std::cin >> newGPA;
+		std::cin >> temp;
 		std::cin.ignore(32767, '\n');
-		arr[index].EditGPA(newGPA);
+		arr[index].EditGPA(temp);
 		std::cout << std::endl;
 		break;
 		//AllData
 	case 6: 
 		std::cout << "Enter new student name: " << std::endl;
-		std::getline(std::cin, test);
-		arr[index].EditName(test);
+		std::getline(std::cin, temp);
+		arr[index].EditName(temp);
+		std::cout << std::endl;
+
+		std::cout << "Enter new student surname: " << std::endl;
+		std::getline(std::cin, temp);
+		arr[index].EditSurname(temp);
 		std::cout << std::endl;
 
 		std::cout << "Enter new groop: " << std::endl;
-		std::getline(std::cin, test);
-		arr[index].EditGroop(test);
+		std::getline(std::cin, temp);
+		arr[index].EditGroop(temp);
 		std::cout << std::endl;
 
 		std::cout << "Enter new student age: " << std::endl;
-		std::cin >> newYear;
+		std::cin >> temp;
 		std::cin.ignore(32767, '\n');
-		arr[index].EditYear(newYear);
+		arr[index].EditYear(temp);
 		std::cout << std::endl;
 
-		std::cout << "Enter new student name: " << std::endl;
-		std::cin >> newGPA;
+		std::cout << "Enter new student GPA: " << std::endl;
+		std::cin >> temp;
 		std::cin.ignore(32767, '\n');
-		arr[index].EditGPA(newGPA);
+		arr[index].EditGPA(temp);
 		std::cout << std::endl;
 	break;
 	default:
@@ -329,7 +334,7 @@ void sort(std::vector<Student>& arr) {
 	case 4:
 		for (int i = 0;i < arr.size(); i++)
 			for (int j = 0; j < arr.size(); j++)
-				if (arr.at(i).m_groop < arr.at(j).m_groop)
+				if (arr.at(i).m_group < arr.at(j).m_group)
 					std::swap(arr.at(i), arr.at(j));
 		break;
 	case 5:
